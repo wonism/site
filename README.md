@@ -1,44 +1,39 @@
-# Hexo Official Website
-<!-- Markdown snippet -->
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/hexojs/site)
+# gatsby-advanced-blog
+> Gatsby starter for advanced blog
 
-[![Build Status](https://travis-ci.org/hexojs/site.svg?branch=master)](https://travis-ci.org/hexojs/site)
-
-The website for Hexo. You can see the generated files at [hexojs/hexojs.github.io](https://github.com/hexojs/hexojs.github.io) repository.
-
-## Getting started
-
-Install dependencies:
-
-``` bash
-$ git clone https://github.com/hexojs/site.git
-$ cd site
-$ npm install
+## Install
+```
+$ npm i -S gatsby-advanced-blog
 ```
 
-Generate:
-
-``` bash
-$ hexo generate
+## Start with gatsby-cli
+```
+$ gatsby new PROJECT_NAME https://github.com/wonism/gatsby-advanced-blog
 ```
 
-Run server:
+## Features
+- Post
+  - Pagination
+  - Categories
+  - Tags
+  - Search
+  - Put React Application into post
+  - Put Tweet into post
+  - Draft (set `hide` to `true`)
+  - Copy codes with clicking button
+- Portfolio
+- Resume
 
-``` bash
-$ hexo server
+## Managing statement by Redux
+- Reselect for selectors
+- Redux saga for asynchronous action
+
+## Development
+```
+$ npm run dev
 ```
 
-## Contributors
-
-- English - [tommy351](https://github.com/tommy351)
-- 正體中文 - [tommy351](https://github.com/tommy351)
-- 简体中文 - [pinggod](https://github.com/pinggod), [Xuanwo](https://github.com/Xuanwo)
-- Русский - [twirlfog](https://github.com/twirlfog)
-- 한국어 - [lazyrodi](https://github.com/lazyrodi)
-
-## License
-
-[CC BY 4.0](http://creativecommons.org/licenses/by/4.0/)
-
-[tommy351]: https://github.com/tommy351
-[pinggod]: https://github.com/pinggod
+## Build
+```
+$ npm run build
+```
