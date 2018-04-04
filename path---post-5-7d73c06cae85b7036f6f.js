@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[29],{260:function(t){t.exports={data:{site:{siteMetadata:{title:"Gatsby Advanced Blog",author:"wonism"}},markdownRemark:{id:"/Users/gimjaewon/project/site/src/pages/post-5/index.md absPath of file >>> MarkdownRemark",html:"<p>HIHI</p>",frontmatter:{title:"Post title",path:"/post-5/",images:null,category:"test",tags:["tag"],date:"2018-01-05T00:00:00.000Z",components:null,tweets:null,summary:"HI"}}},pageContext:{}}}}]);
+//# sourceMappingURL=path---post-5-7d73c06cae85b7036f6f.js.map
