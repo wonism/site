@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "express": "^4.16.3",
     "gatsby": "^2.0.0-alpha.12",
     "gatsby-link": "^1.6.40",
     "lodash": "^4.17.5",
