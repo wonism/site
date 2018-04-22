@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import fp from 'lodash/fp';
-import {
-  historyGoBack,
-  copyText,
-  printPage,
-} from '~/store/app/actions';
 import PostsWrapper from '~/components/Common/PostsWrapper';
 import Card from '~/components/Common/Card';
 import Pagination from '~/components/Common/Pagination';
@@ -20,7 +15,6 @@ const CategorizedList = ({
   location,
 }) => {
   const page = getPage(3)(location);
-  const siteTitle = fp.get('site.siteMetadata.title')(data);
   const category = fp.flow(
     fp.get('pathname'),
     fp.split('/'),
@@ -44,8 +38,8 @@ const CategorizedList = ({
   return ([
     <PostsWrapper key="posts-wrapper">
       <Helmet>
-        <title>{siteTitle}</title>
-        <meta name="og:title" content={siteTitle} />
+        <title>WONISM | {fp.toUpper(category)}</title>
+        <meta name="og:title" content={`WONISM | ${fp.toUpper(category)}`} />
       </Helmet>
       {fp.isEmpty(posts) ? (
         <div>Posts Not Found.</div>
@@ -80,21 +74,12 @@ CategorizedList.propTypes = {
 export default connect(
   state => state,
   {
-    historyGoBack,
-    copyText,
-    printPage,
   }
 )(CategorizedList);
 
 /* eslint-disable no-undef */
 export const pageQuery = graphql`
   query CategorizedListQuery {
-    site {
-      siteMetadata {
-        title
-        author
-      }
-    }
     allMarkdownRemark (
       filter: {
         frontmatter: {

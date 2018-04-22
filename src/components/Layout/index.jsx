@@ -1,4 +1,4 @@
-import React, { Children, cloneElement, PureComponent } from 'react';
+import React, { Children, cloneElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import fp from 'lodash/fp';
@@ -13,10 +13,10 @@ const Background = styled.div`
   background-color: #fff;
 `;
 
-export default class Layout extends PureComponent {
+/* eslint-disable react/prefer-stateless-function */
+export default class Layout extends Component {
   static propTypes = {
     // historyGoBack: PropTypes.func.isRequired,
-    copyText: PropTypes.func.isRequired,
     printPage: PropTypes.func.isRequired,
     categories: PropTypes.arrayOf(PropTypes.shape({})),
     postInformations: PropTypes.arrayOf(PropTypes.shape({
@@ -41,7 +41,6 @@ export default class Layout extends PureComponent {
   render() {
     const {
       // historyGoBack,
-      copyText,
       printPage,
       categories,
       postInformations,
@@ -53,7 +52,6 @@ export default class Layout extends PureComponent {
     const childrenWithProps = Children.map(children, child =>
       cloneElement(child, {
         location,
-        copyText,
         printPage,
         portfolios,
       }));
@@ -83,3 +81,4 @@ export default class Layout extends PureComponent {
     );
   }
 }
+/* eslint-enable react/prefer-stateless-function */

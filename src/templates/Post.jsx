@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { render } from 'react-dom';
 import PropTypes from 'prop-types';
 import Link from 'gatsby-link';
 import { connect } from 'react-redux';
@@ -8,11 +7,7 @@ import Helmet from 'react-helmet';
 import FaTags from 'react-icons/lib/fa/tags';
 import fp from 'lodash/fp';
 import {
-  historyGoBack,
-} from '~/store/app/actions';
-import {
-  copyText,
-  initDisqusConfig,
+  loadDisqus,
   renderTweets,
   renderComponents,
   createCopyButton,
@@ -20,7 +15,6 @@ import {
 import Bio from '~/components/Bio';
 import PostWrapper from '~/components/Common/PostWrapper';
 import { SITE_URL } from '~/constants';
-import { PRIMARY_COLOR } from '~/components/Common/constants';
 import formattedDate from '~/utils/formattedDate';
 import './post.less';
 
@@ -40,6 +34,7 @@ const Tags = styled.div`
 
 const PostContent = styled.section`
   padding: 1em 0 4em;
+  line-height: 1.6em;
 
   h2 {
     margin: 24px 0 10px;
@@ -78,8 +73,9 @@ const PostContent = styled.section`
 
 const ImageWrapper = styled.figure`
   position: relative;
-  width: 100%;
+  margin: 0 0 48px;
   padding: 56.25% 0 0;
+  width: 100%;
   overflow: hidden;
 
   img {
@@ -94,11 +90,12 @@ const ImageWrapper = styled.figure`
   }
 `;
 
+/* eslint-disable global-require, import/no-dynamic-require */
 class Post extends PureComponent {
   static propTypes = {
     data: PropTypes.shape({ date: PropTypes.object }).isRequired,
     location: PropTypes.shape({}).isRequired,
-    initDisqusConfig: PropTypes.func.isRequired,
+    loadDisqus: PropTypes.func.isRequired,
     renderTweets: PropTypes.func.isRequired,
     renderComponents: PropTypes.func.isRequired,
     createCopyButton: PropTypes.func.isRequired,
@@ -110,8 +107,9 @@ class Post extends PureComponent {
     const { pathname: identifier } = location;
     const url = fp.add(SITE_URL, identifier);
     const title = fp.get('data.markdownRemark.frontmatter.title')(this.props);
+    console.log('@@@@@@@@@');
 
-    this.props.initDisqusConfig({
+    this.props.loadDisqus({
       url,
       identifier,
       title,
@@ -130,28 +128,31 @@ class Post extends PureComponent {
 
   render() {
     const { data } = this.props;
-    const post = fp.get('markdownRemark')(data);
-    const siteTitle = fp.get('site.siteMetadata.title')(data);
-    const title = `${fp.get('frontmatter.title')(post)} | ${siteTitle}`;
-    const tags = fp.get('frontmatter.tags')(post);
-    const image = fp.flow(fp.get('frontmatter.images'), fp.first)(post);
+    const post = fp.get('markdownRemark.frontmatter')(data);
+    const { title, tags, date, images } = post;
+    const image = fp.first(images);
 
     return (
       <PostWrapper>
         <Helmet>
-          <title>{title}</title>
-          <meta name="og:title" content={title} />
+          <title>
+            WONISM | {title}
+          </title>
+          <meta name="og:title" content={`WONISM | ${title}`} />
         </Helmet>
         {fp.isNil(image) ? null : (
           <ImageWrapper>
-            <img src={image} alt={title} />
+            <img
+              src={fp.includes('//')(image) ? image : require(`~/resources/${image}`)}
+              alt={title}
+            />
           </ImageWrapper>
         )}
         <h1>
-          {fp.get('frontmatter.title')(post)}
+          {title}
         </h1>
         <time>
-          {fp.flow(fp.get('frontmatter.date'), formattedDate)(post)}
+          {formattedDate(date)}
         </time>
         {fp.isEmpty(tags) ? null : (
           <Tags>
@@ -180,13 +181,12 @@ class Post extends PureComponent {
     );
   }
 }
+/* eslint-enable global-require, import/no-dynamic-require */
 
 export default connect(
   state => state,
   {
-    historyGoBack,
-    copyText,
-    initDisqusConfig,
+    loadDisqus,
     renderTweets,
     renderComponents,
     createCopyButton,
@@ -196,12 +196,6 @@ export default connect(
 /* eslint-disable no-undef */
 export const pageQuery = graphql`
   query PostByPath($path: String!) {
-    site {
-      siteMetadata {
-        title
-        author
-      }
-    }
     markdownRemark (
       frontmatter: { path: { eq: $path } }
     ) {
